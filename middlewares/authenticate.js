@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 
-import { User } from "../models/User.js";
+import User from "../models/User.js";
 
-import { HttpError } from "../helpers/HttpError.js";
+import { HttpError } from "../helpers/index.js";
 
 const { SECRET_KEY } = process.env;
 
