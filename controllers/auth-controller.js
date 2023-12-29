@@ -62,10 +62,20 @@ const getCurrent = async (req, res) => {
         email,
         subscription
     })
+}
+
+const logout = async (req, res) => {
+    const { _id } = req.user;
+    await User.findByIdAndUpdate(_id, { token: "" });
+
+    res.status(204).json({
+        message: 'No Content'
+    })
 };
 
 export default {
     signup: ctrlWrapper(signup),
     signin: ctrlWrapper(signin),
     getCurrent: ctrlWrapper(getCurrent),
+    logout: ctrlWrapper(logout),
 }
