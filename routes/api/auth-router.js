@@ -16,4 +16,6 @@ authRouter.post("/login", isEmptyBody, validateBody(userSigninSchema), authContr
 
 authRouter.get("/current", authenticate, authController.getCurrent);
 
+authRouter.post("/logout", authenticate, authController.logout);
+
 export default authRouter;
