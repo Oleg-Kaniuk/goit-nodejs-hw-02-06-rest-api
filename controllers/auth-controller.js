@@ -1,5 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import gravatar from "gravatar";
+import path from "path";
+import fs from "fs/promises";
 
 import User from "../models/User.js";
 
@@ -7,7 +10,9 @@ import { HttpError } from "../helpers/index.js";
 
 import { ctrlWrapper } from "../decorators/index.js";
 
-const {JWT_SECRET} = process.env;
+const { JWT_SECRET } = process.env;
+
+// const avatarsDir = path.resolve("public", "avatars");
 
 const signup = async(req, res)=> {
     const {email, password} = req.body;
@@ -17,8 +22,9 @@ const signup = async(req, res)=> {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
+    const avatarURL = gravatar.url(email);
 
-    const newUser = await User.create({...req.body, password: hashPassword});
+    const newUser = await User.create({...req.body, password: hashPassword, avatarURL});
 
     res.status(201).json({
         user: {
