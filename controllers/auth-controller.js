@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import path from "path";
 import fs from "fs/promises";
+import Jimp from "jimp";
 
 import User from "../models/User.js";
 
@@ -91,9 +92,15 @@ const subscription = async (req, res) => {
 const updateAvatar = async(req, res)=> {
     const {_id} = req.user;
     const {path: tmpUpload, originalname} = req.file;
-    const filename = `${_id}_${originalname}`;
+    const filename = `${Date.now()}-${originalname}`;
     const resultUpload = path.join(avatarsDir, filename);
-    await fs.rename(tmpUpload, resultUpload);
+    // await fs.rename(tmpUpload, resultUpload);
+    Jimp.read(tmpUpload, (err, image) => {
+        if (err) throw HttpError(404, err);
+        image.resize(250, 250)
+            .write(resultUpload);
+    });
+    await fs.unlink(tmpUpload);
     const avatarURL = path.join("avatars", filename);
     await User.findByIdAndUpdate(_id, {avatarURL});
 
