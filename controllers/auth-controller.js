@@ -89,7 +89,10 @@ const subscription = async (req, res) => {
     res.json(result);
 };
 
-const updateAvatar = async(req, res)=> {
+const updateAvatar = async (req, res) => {
+    if (!req.file) {
+    throw HttpError(400, 'Avatar must be provided');
+  }
     const {_id} = req.user;
     const {path: tmpUpload, originalname} = req.file;
     const filename = `${Date.now()}-${originalname}`;
