@@ -41,12 +41,6 @@ const signup = async(req, res)=> {
             email: newUser.email,
             subscription: newUser.subscription}
     });
-
-    res.status(201).json({
-        user: {
-            email: newUser.email,
-            subscription: newUser.subscription}
-    });
 }
 
 const verify = async(req, res)=> {
